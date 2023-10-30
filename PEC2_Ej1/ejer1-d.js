@@ -1,16 +1,17 @@
-// Función asíncrona que busca el elemento dentro del array.
-const findElement = async (list, { key, value }, { onSuccess, onError }) => {
-  const element = await list.find((element) => element[key] === value);
-
-  return element;
-};
-
 // Función asíncrona que espera a que se encuentre el elemento en el array
 // para mostrar un mensaje de éxito o error por pantalla.
 const findOne = async (list, { key, value }, { onSuccess, onError }) => {
   const element = await list.find((element) => element[key] === value);
 
   element ? onSuccess(element) : onError({ msg: "ERROR: Element Not Found" });
+};
+
+// Función que fabrica las dos promesas paralelas.
+const findAll = async () => {
+  return await Promise.all([
+    findOne(users, { key: "name", value: "Carlos" }, { onSuccess, onError }),
+    findOne(users, { key: "name", value: "Fermin" }, { onSuccess, onError }),
+  ]);
 };
 
 // Declara la función onSuccess como una arrow function.
@@ -32,10 +33,8 @@ const users = [
   },
 ];
 
-// findOne encontrará el objeto con name: "Carlos" e imprimirá "name: Carlos".
-console.log("findOne success");
-findOne(users, { key: "name", value: "Carlos" }, { onSuccess, onError });
-
-// findOne no encontrará el objeto con name: "Fermin" e imprimirá "ERROR: Element Not Found".
-console.log("findOne error");
-findOne(users, { key: "name", value: "Fermin" }, { onSuccess, onError });
+// Llama a findAll() para crear las promesas y las ejecuta en paralelo.
+// Luego lanza un mensaje por pantalla.
+findAll().then(() => {
+  console.log("Both calls to findOne have been executed in parallel.");
+});
