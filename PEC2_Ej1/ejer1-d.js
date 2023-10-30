@@ -1,4 +1,11 @@
-// Función asíncrona que espera a que se encuentre o no el elemento en el array
+// Función asíncrona que busca el elemento dentro del array.
+const findElement = async (list, { key, value }, { onSuccess, onError }) => {
+  const element = await list.find((element) => element[key] === value);
+
+  return element;
+};
+
+// Función asíncrona que espera a que se encuentre el elemento en el array
 // para mostrar un mensaje de éxito o error por pantalla.
 const findOne = async (list, { key, value }, { onSuccess, onError }) => {
   const element = await list.find((element) => element[key] === value);
